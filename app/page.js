@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
+import Markdown from 'react-markdown'
 import { sendMsgToOpenAI } from "@/app/openai";
 export default function Home() {
   const msgEnd = useRef(null);
@@ -50,14 +51,6 @@ export default function Home() {
         >
           <Image src= "/add-30.png" alt="new chat" className="w-5 h-5 mr-2" width={20} height={20}/>New Chat
         </button>
-        <div className="flex flex-col space-y-2">
-          <button className="bg-gray-700 p-3 rounded flex items-center" onClick={handleQuery} value="What is Programming ?">
-            <Image src="/message.svg" alt="Query" className="w-5 h-5 mr-2" width={20} height={20}/>What is Programming ?
-          </button>
-          <button className="bg-gray-700 p-3 rounded flex items-center" onClick={handleQuery} value="How to use an API ?">
-            <Image src="/message.svg" alt="Query" className="w-5 h-5 mr-2"  width={20} height={20}/>How to use an API ?
-          </button>
-        </div>
       </div>
 
       {/* Chat Main Area */}
@@ -66,7 +59,9 @@ export default function Home() {
           {messages.map((message, i) => (
             <div key={i} className={`flex ${message.isBot ? "bg-gray-800 p-4 rounded" : "justify-end"}`}>
               <Image className="w-10 h-10 rounded mr-3" src={message.isBot ? "/chatgptLogo.svg" : "/user-icon.png"} alt={message.isBot ? "Bot" : "User"} width={20} height={20}/>
-              <p className="text-gray-300">{message.text}</p>
+              <p className="text-gray-300">
+                <Markdown>{message.text}</Markdown>
+                </p>
             </div>
           ))}
           <div ref={msgEnd} />
