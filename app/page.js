@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Markdown from "react-markdown";
 import { sendMsgToOpenAI } from "@/app/openai";
 import useChatStore from "./store";
+import { FaRegTrashCan } from "react-icons/fa6";
 
 export default function Home() {
   const msgEnd = useRef(null);
@@ -16,6 +17,8 @@ export default function Home() {
     createNewChat,
     setActiveConversation,
     addMessage,
+    clearAllConversations,
+    deleteConversation
   } = useChatStore();
 
   const messages =
@@ -55,34 +58,44 @@ export default function Home() {
   return (
     <div className="flex h-screen bg-black text-white">
       {/* Sidebar - Responsive */}
-      <div className={`fixed md:relative z-10 bg-black transition-all duration-300 ${isSidebarOpen ? "w-64" : "w-0"} md:w-1/5 h-full overflow-hidden`}>
-        <div className="p-6 flex flex-col border-r border-gray-700">
-          <div className="flex items-center mb-6">
-            <Image src="/chatgpt.svg" alt="ChatGPT" className="w-8 h-8 mr-2" width={20} height={20} />
-            <span className="text-lg font-bold">ChatGPT</span>
-          </div>
-          <button 
-            className="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded mb-4 flex items-center justify-center"
-            onClick={createNewChat} 
-          >
-            <Image src="/add-30.png" alt="New Chat" className="w-5 h-5 mr-2" width={20} height={20} />New Chat
-          </button>
+      {/* Sidebar */}
+<div className={`fixed md:relative z-10 bg-gray-800 transition-all duration-300 ${isSidebarOpen ? "w-64" : "w-0"} md:w-1/5 h-full overflow-hidden`}>
+  <div className="p-6 flex flex-col border-r border-gray-700">
+    <div className="flex items-center mb-6">
+      <Image src="/chatgpt.svg" alt="ChatGPT" className="w-8 h-8 mr-2" width={20} height={20} />
+      <span className="text-lg font-bold">ChatGPT</span>
+    </div>
+    <button 
+      className="w-full bg-blue-600 hover:bg-blue-700 py-3 rounded mb-4 flex items-center justify-center"
+      onClick={createNewChat} 
+    >
+      <Image src="/add-30.png" alt="New Chat" className="w-5 h-5 mr-2" width={20} height={20} />New Chat
+    </button>
 
-          {/* Chat List */}
-          <div className="flex flex-col space-y-2">
-            {conversations.map((chat) => (
-              <button 
-                key={chat.id} 
-                className={`p-3 rounded flex items-center ${chat.id === activeConversationId ? "bg-gray-700" : "bg-gray-600"}`}
-                onClick={() => setActiveConversation(chat.id)}
-              >
-                <Image src="/message.svg" alt="Chat" className="w-5 h-5 mr-2" width={20} height={20} />
-                Chat {chat.id.slice(0, 6)}
-              </button>
-            ))}
-          </div>
+    {/* Chat List */}
+    <div className="flex flex-col space-y-2">
+      {conversations.map((chat) => (
+        <div key={chat.id} className="flex items-center justify-between bg-gray-600 rounded p-3">
+          <button 
+            className={`flex items-center flex-grow ${chat.id === activeConversationId ? "bg-gray-700" : ""}`}
+            onClick={() => setActiveConversation(chat.id)}
+          >
+            <Image src="/message.svg" alt="Chat" className="w-5 h-5 mr-2" width={20} height={20} />
+            <span>Chat {chat.id.slice(0, 6)}</span>
+          </button>
+          <button 
+            className="text-red-400 hover:text-red-600 ml-2"
+            onClick={() => deleteConversation(chat.id)}
+          >
+            <FaRegTrashCan />
+          </button>
         </div>
-      </div>
+      ))}
+    </div>
+   
+  </div>
+</div>
+
 
       {/* Chat Main Area */}
       <div className="flex-1 flex flex-col p-4 md:p-6">

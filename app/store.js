@@ -1,51 +1,41 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import { nanoid } from "nanoid"; // Unique IDs for chats
+import { v4 as uuidv4 } from "uuid";
 
-const useChatStore = create(
-  persist(
-    (set, get) => ({
-      conversations: [], // List of chats
-      activeConversationId: null, // Current chat session
+const useChatStore = create((set) => ({
+  conversations: [],
+  activeConversationId: null,
 
-      // ✅ Create a new conversation
-      createNewChat: () => {
-        const newChat = {
-          id: nanoid(),
-          messages: [{ text: "Hi, I am ChatGPT.", isBot: true }],
-        };
+  createNewChat: () => {
+    const newChat = { id: uuidv4(), messages: [] };
+    set((state) => ({
+      conversations: [...state.conversations, newChat],
+      activeConversationId: newChat.id,
+    }));
+  },
 
-        set((state) => ({
-          conversations: [...state.conversations, newChat],
-          activeConversationId: newChat.id,
-        }));
-      },
+  setActiveConversation: (id) => set({ activeConversationId: id }),
 
-      // ✅ Set active conversation
-      setActiveConversation: (id) => set({ activeConversationId: id }),
+  addMessage: (text, isBot) => {
+    set((state) => ({
+      conversations: state.conversations.map((chat) =>
+        chat.id === state.activeConversationId
+          ? { ...chat, messages: [...chat.messages, { text, isBot }] }
+          : chat
+      ),
+    }));
+  },
 
-      // ✅ Add messages to active conversation
-      addMessage: (text, isBot) => {
-        set((state) => {
-          const updatedChats = state.conversations.map((chat) =>
-            chat.id === state.activeConversationId
-              ? { ...chat, messages: [...chat.messages, { text, isBot }] }
-              : chat
-          );
-          return { conversations: updatedChats };
-        });
-      },
+  deleteConversation: (id) => {
+    set((state) => {
+      const updatedChats = state.conversations.filter((chat) => chat.id !== id);
+      return {
+        conversations: updatedChats,
+        activeConversationId: updatedChats.length > 0 ? updatedChats[0].id : null,
+      };
+    });
+  },
 
-      // ✅ Get active chat messages
-      getActiveMessages: () => {
-        const activeChat = get().conversations.find(
-          (chat) => chat.id === get().activeConversationId
-        );
-        return activeChat ? activeChat.messages : [];
-      },
-    }),
-    { name: "chat-storage" } // Persists chat in localStorage
-  )
-);
+  clearAllConversations: () => set({ conversations: [], activeConversationId: null }),
+}));
 
 export default useChatStore;
