@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 5000; // ✅ Fallback to 5000 if undefined
 app.post('/api/completion', async (req, res) => {
     try {
         const { message } = req.body;
-        console.log("Received message:", message);
+        // console.log("Received message:", message);
 
         const response = await axios.post(
             'https://api.mistral.ai/v1/chat/completions',
@@ -33,7 +33,7 @@ app.post('/api/completion', async (req, res) => {
             }
         );
 
-        console.log("Mistral Response:", response.data);
+        // console.log("Mistral Response:", response.data);
         res.json({ result: response.data.choices[0].message.content });
     } catch (error) {
         console.error("Error in /api/completion:", error.response?.data || error.message);
