@@ -1,36 +1,58 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# React Chat Interface
 
-## Getting Started
+## Overview
+This project is a fully functional chat interface built using React. The application mimics the layout and functionality of ChatGPT, supporting Markdown rendering, maintaining conversation history, and integrating with an AI API for chat responses.
 
-First, run the development server:
+## Features
+- **Chat Interface**: A user-friendly interface that replicates the ChatGPT experience.
+- **API Integration**: Fetch chat responses using an Mistral API  with proper error handling.
+- **Markdown Support**: Enables rendering of Markdown-formatted responses.
+- **State Management**: Maintains conversation history within the app context.
+- **Sidebar with Chat Threads**: Allows users to switch between multiple conversations easily.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
+- **Frontend**: Next.js for frontend UI, Tailwind CSS for styling purposes
+- **Backend**: Express.js for crud operations
+- **State Management**: Zustand
+- **AI API**: used Mistal api keys
+.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/react-chat-interface.git
+   cd react-chat-interface
+   ```
+2. Install dependencies for frontend:
+   ```bash
+   npm install
+   ```
+3. Start the frontend server:
+   ```bash
+   npm run dev
+   ```
+4. Install dependencies for backend:
+   ```bash
+   cd server
+   npm install
+   ```
+5. Create an `.env` file in server directory and add your API key:
+   ```env
+   MISTRAL_API_KEY=your_api_key_here
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+6. Start the backend server:
+   ```bash
+   
+   node server.js
+   ```
 
-## Learn More
+## Usage
+1. Type a message in the chat input box.
+2. Receive AI-generated responses in real-time.
+3. View and switch between multiple chat threads using the sidebar.
+4. click on the delete button to delete any previous conversation.
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
